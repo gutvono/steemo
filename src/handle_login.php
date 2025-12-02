@@ -37,7 +37,7 @@ if (count($erros) === 0) {
   <main style="max-width: 640px; margin: 32px auto; padding: 24px;">
     <h1>Login</h1>
     <p><?php echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8'); ?></p>
-    <p><a href="../public/login.php">Voltar</a> | <a href="../public/register.php">Cadastre-se</a></p>
+    <p><a href="http://localhost:8080/login.php">Voltar</a> | <a href="http://localhost:8080/register.php">Cadastre-se</a></p>
   </main>
 </body>
 </html>
