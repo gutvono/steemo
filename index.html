@@ -48,6 +48,10 @@
     </div>
   </header>
 
+  <div class="userbar">
+    <div id="userbar" class="container"></div>
+  </div>
+
   <h1>Steemo - Aqui sua gameplay é no precinho</h1>
 
   <section class="sobre" id="sobre">
@@ -189,6 +193,43 @@
           menuNav.classList.remove('ativo');
         });
       });
+
+      const userbar = document.getElementById('userbar');
+      try {
+        const auth = JSON.parse(localStorage.getItem('auth') || 'null');
+        if (auth && auth.username) {
+          const role = auth.role || 'usuario';
+          const wrapper = document.createElement('div');
+          wrapper.className = 'user-dropdown';
+          wrapper.innerHTML = `
+            <button class="user-btn" aria-haspopup="true" aria-expanded="false">${auth.username}</button>
+            <ul class="user-menu" role="menu" hidden>
+              <li role="menuitem"><a href="#" id="logout-link">Logout</a></li>
+              ${role === 'administrador' ? '<li role="menuitem"><a href="#" id="manage-products-link">Gerenciar produtos</a></li>' : ''}
+              ${role === 'administrador' ? '<li role="menuitem"><a href="public/users.php" id="manage-users-link">Gerenciar usuarios</a></li>' : ''}
+            </ul>`;
+          userbar.appendChild(wrapper);
+          const btn = wrapper.querySelector('.user-btn');
+          const menu = wrapper.querySelector('.user-menu');
+          btn.addEventListener('click', () => {
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            if (expanded) { menu.hidden = true; } else { menu.hidden = false; }
+          });
+          document.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) { menu.hidden = true; btn.setAttribute('aria-expanded','false'); }
+          });
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { menu.hidden = true; btn.setAttribute('aria-expanded','false'); }
+          });
+          const logout = wrapper.querySelector('#logout-link');
+          logout.addEventListener('click', (e) => {
+            e.preventDefault();
+            try { localStorage.removeItem('auth'); } catch(err) {}
+            window.location.href = '/index.html';
+          });
+        }
+      } catch(err) {}
     });
   </script>
 </body>

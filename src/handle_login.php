@@ -12,7 +12,7 @@ if (count($erros) === 0) {
     $stmt->execute([$email, $senha]);
     $user = $stmt->fetch();
     if ($user) {
-      $msg = 'Login realizado: ' . $user['nome'] . ' (' . $user['nivel'] . ')';
+      $msg = 'Usuário logado com sucesso';
     } else {
       $msg = 'Credenciais inválidas';
     }
@@ -40,7 +40,15 @@ if (count($erros) === 0) {
     <p><a href="/public/login.php">Voltar</a> | <a href="/public/register.php">Cadastre-se</a></p>
   </main>
   <?php if (isset($user) && $user) { ?>
-    <script>setTimeout(function(){ window.location.href = '/index.html'; }, 1500);</script>
+    <script>
+      (function(){
+        try {
+          var payload = { username: <?php echo json_encode($user['nome']); ?>, role: <?php echo json_encode($user['nivel']); ?> };
+          localStorage.setItem('auth', JSON.stringify(payload));
+        } catch(e) {}
+        setTimeout(function(){ window.location.href = '/index.html'; }, 1500);
+      })();
+    </script>
   <?php } ?>
 </body>
 </html>

@@ -130,6 +130,7 @@ Observação: o Dockerfile já copia `scripts/init.sql` e `scripts/seed.sql` par
   - Campos: Email e Senha, botão com gradiente nas cores do tema
   - Botões Voltar: histórico e Home com fallback confiável
   - Feedback simples de sucesso/erro após envio
+  - Após sucesso, os dados do usuário são salvos no `localStorage` (`username`, `role`) e ocorre redirecionamento automático para a home
 
 - Cadastro
   - Formulário essencial em `public/register.php` sem cabeçalho/rodapé
@@ -155,6 +156,13 @@ Observação: o Dockerfile já copia `scripts/init.sql` e `scripts/seed.sql` par
 - Navegação
   - Botões de retorno funcionam em múltiplos cenários
   - Links diretos para login/cadastro a partir da página principal
+  - Header com dropdown do usuário (fora do navbar) exibindo: `Logout` sempre e, para administradores, `Gerenciar produtos` e `Gerenciar usuarios`
+  - O dropdown lê o estado do `localStorage` e persiste entre recargas
 
 - Responsividade
   - Layouts testados em diferentes larguras, mantendo legibilidade
+
+### Como acessar a listagem de usuários
+- Pela navbar da home: botão `Usuarios`
+- Diretamente: `http://localhost:8080/public/users.php`
+- Requisitos: MySQL ativo e scripts `init.sql`/`seed.sql` aplicados
